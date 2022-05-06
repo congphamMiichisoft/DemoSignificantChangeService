@@ -17,12 +17,20 @@ class ViewController: UIViewController {
     }()
     let refreshIndicator = UIRefreshControl()
     var listLocation: [LocationModel] = []
-    
+    var listFilter: [LocationModel] = []
+    var isFilter: Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         configTableView()
         configData()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Significant", style: .plain, target: self, action: #selector(filterLocation))
+    }
+    
+    @objc func filterLocation(){
+        isFilter = !isFilter
+        tableView.reloadData()
+        
     }
     func configTableView(){
         view.addSubview(tableView)
@@ -49,8 +57,10 @@ class ViewController: UIViewController {
     func configData(){
         if let listLocation = RealmManagerUltil.shared.getListLocation(){
             self.listLocation = listLocation
+            listFilter = listLocation.filter({$0.distanceMove > 500})
             tableView.reloadData()
             refreshIndicator.endRefreshing()
+            
         }
     }
     
@@ -62,14 +72,20 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listLocation.count
+        return isFilter ? listFilter.count : listLocation.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let list = isFilter ? listFilter : listLocation
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let loc = listLocation[indexPath.row]
+        let loc = list[indexPath.row]
         cell.textLabel?.numberOfLines = 0
-        let stt = listLocation.count - 1 - indexPath.row
+        let stt = list.count - 1 - indexPath.row
         cell.textLabel?.text = "\(stt)\n Lat: \(loc.lat) \n Lon: \(loc.lon) \n Distance: \(round(loc.distanceMove)) \n Speed: \(loc.speed) \n Time: \(loc.time.toString())"
+        if loc.distanceMove > 500 {
+            cell.backgroundColor = .red
+        }else {
+            cell.backgroundColor = .white
+        }
         return cell
     }
 }
