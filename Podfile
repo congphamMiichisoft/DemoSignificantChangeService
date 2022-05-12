@@ -6,5 +6,7 @@ target 'Significant-Change-Service' do
   use_frameworks!
 
   # Pods for Significant-Change-Service
+  pod 'GoogleMaps', '6.2.0'
+  pod 'MicrosoftMapsSDK', '~> 1.2.0'
 
 end

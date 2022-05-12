@@ -10,6 +10,7 @@ import CoreLocation
 import UserNotifications
 
 class LocationManagerUltil {
+    var locationManager: CLLocationManager!
     static let shared = LocationManagerUltil()
     
     init(){
@@ -40,3 +41,5 @@ class LocationManagerUltil {
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
 }
+
+

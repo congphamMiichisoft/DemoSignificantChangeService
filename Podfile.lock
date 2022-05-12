@@ -1,3 +1,24 @@
-PODFILE CHECKSUM: 0f9079fda9100daaf70cb2661e29ad98d4d7faac
+PODS:
+  - GoogleMaps (6.2.0):
+    - GoogleMaps/Maps (= 6.2.0)
+  - GoogleMaps/Base (6.2.0)
+  - GoogleMaps/Maps (6.2.0):
+    - GoogleMaps/Base
+  - MicrosoftMapsSDK (1.2.0)
+
+DEPENDENCIES:
+  - GoogleMaps (= 6.2.0)
+  - MicrosoftMapsSDK (~> 1.2.0)
+
+SPEC REPOS:
+  trunk:
+    - GoogleMaps
+    - MicrosoftMapsSDK
+
+SPEC CHECKSUMS:
+  GoogleMaps: c1b9de14cecc940b2d334dd4e6dfa116bff4a40e
+  MicrosoftMapsSDK: c914b8c87b978d4665a00a5515bd35a43993429d
+
+PODFILE CHECKSUM: 524600cc9e6e6c3ff11b8fd9ac24f0f87ab7cfa5
 
 COCOAPODS: 1.11.3

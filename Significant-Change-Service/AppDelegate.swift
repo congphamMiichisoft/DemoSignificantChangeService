@@ -8,6 +8,8 @@
 import UIKit
 import CoreLocation
 import UserNotifications
+import GoogleMaps
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         configLocationManager()
+        configMap()
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, err) in
                 print("granted: (\(granted)")
             }
@@ -38,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.requestAlwaysAuthorization()
-        
+        LocationManagerUltil.shared.locationManager = locationManager
         if #available(iOS 14.0, *) {
             switch locationManager.authorizationStatus {
             case .authorizedAlways, .authorizedWhenInUse:
@@ -52,8 +55,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     func startMonitoring(){
-        locationManager.startUpdatingLocation()
-        startMySignificantLocationChanges()
+//        locationManager.startUpdatingLocation()
+//        startMySignificantLocationChanges()
+        locationManager.startMonitoringVisits()
+    }
+    
+    func configMap(){
+        GMSServices.provideAPIKey("AIzaSyBrykI-fcRWjIkkaSZmNWvwg8zbGz1x3Nc")
     }
 
 
@@ -74,6 +82,13 @@ extension AppDelegate: CLLocationManagerDelegate{
             print(location.coordinate)
             LocationManagerUltil.shared.handleLocation(location: location)
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print(region)
+    }
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print(region)
     }
     
     func startMySignificantLocationChanges() {

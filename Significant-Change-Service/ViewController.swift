@@ -24,13 +24,20 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         configTableView()
         configData()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Significant", style: .plain, target: self, action: #selector(filterLocation))
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(title: "Significant", style: .plain, target: self, action: #selector(filterLocation)),
+            UIBarButtonItem(title: "Show Map", style: .plain, target: self, action: #selector(showMap))]
     }
     
     @objc func filterLocation(){
         isFilter = !isFilter
         tableView.reloadData()
         
+    }
+    @objc func showMap(){
+        let vc = MapViewController()
+        vc.initData(listLocation: isFilter ? listFilter : listLocation)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     func configTableView(){
         view.addSubview(tableView)
@@ -57,7 +64,7 @@ class ViewController: UIViewController {
     func configData(){
         if let listLocation = RealmManagerUltil.shared.getListLocation(){
             self.listLocation = listLocation
-            listFilter = listLocation.filter({$0.distanceMove > 500})
+            listFilter = listLocation.filter({$0.distanceMove > 100})
             tableView.reloadData()
             refreshIndicator.endRefreshing()
             
